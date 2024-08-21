@@ -1,22 +1,33 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
   <div class="container">
-    <a class="navbar-brand" href="#">ChitChat</a>
-    @if (accountService.currentUser()) {
+    <a class="navbar-brand" routerlink="/" routerLinkActive="active"
+      >ChitChat</a
+    >
+
     <ul class="navbar-nav me-auto mb-2 mb-md-0">
+      @if (accountService.currentUser()) {
       <li class="nav-item">
-        <a class="nav-link active">Matches</a>
+        <a class="nav-link" routerLink="/members" routerLinkActive="active"
+          >Matches</a
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link active">Lists</a>
+        <a class="nav-link" routerLink="/lists" routerLinkActive="active"
+          >Lists</a
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link active">Messages</a>
+        <a class="nav-link" routerLink="/messages" routerLinkActive="active"
+          >Messages</a
+        >
       </li>
+      }
     </ul>
-    } @if (accountService.currentUser()) {
+    @if (accountService.currentUser()) {
+    <div>{{ accountService.currentUser()?.Username }}</div>
     <div dropdown class="dropdown">
       <a dropdownToggle class="dropdown-toggle text-light text-decoration-none"
-        >Welcome user</a
+        >Welcome {{ accountService.currentUser()?.Username | titlecase }}</a
       >
       <div *bsDropdownMenu class="dropdown-menu">
         <a class="dropdown-item">Edit Profile</a>
@@ -39,7 +50,7 @@
         [(ngModel)]="model.password"
         placeholder="Password"
       />
-      <button class="btn btn-outline-success" type="submit">Login</button>
+      <button class="btn btn-success" type="submit">Login</button>
     </form>
     }
   </div>

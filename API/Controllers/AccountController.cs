@@ -15,18 +15,19 @@ namespace API.Controllers
         public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
         {
             if (await IsUserExists(registerDto.Username)) return BadRequest("username already taken");
-            using var hmac = new HMACSHA512();
+            return Ok();
+            // using var hmac = new HMACSHA512();
 
-            var user = new AppUser
-            {
-                UserName = registerDto.Username.ToLower(),
-                PassordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
-            };
-            dataContext.Users.Add(user);
-            await dataContext.SaveChangesAsync();
+            // var user = new AppUser
+            // {
+            //     UserName = registerDto.Username.ToLower(),
+            //     PassordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+            //     PasswordSalt = hmac.Key
+            // };
+            // dataContext.Users.Add(user);
+            // await dataContext.SaveChangesAsync();
 
-            return user;
+            // return user;
         }
 
         [HttpPost("login")]

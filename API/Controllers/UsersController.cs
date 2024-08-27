@@ -1,28 +1,35 @@
-using API.Data;
-using API.Models;
+using API.DTOs;
+using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-
-    public class UsersController(DataContext dataContext) : BaseApiController
+    [Authorize]
+    public class UsersController(IUserRepository UserRepository) : BaseApiController
     {
-        private readonly DataContext AppDbContext = dataContext;
-        [AllowAnonymous]
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users = await AppDbContext.Users.ToListAsync();
-            return users;
+            var users = await UserRepository.GetMembersAsync();
+            return Ok(users);
         }
 
-        [Authorize]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<MemberDto>> GetUserById(int id)
         {
-            var user = await AppDbContext.Users.FindAsync(id);
+            var user = await UserRepository.GetUserById(id);
+            if (user == null) return NotFound();
+
+            return user;
+        }
+
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetUserByUsername(string username)
+        {
+            var user = await UserRepository.GetMemberAsync(username);
             if (user == null) return NotFound();
 
             return user;

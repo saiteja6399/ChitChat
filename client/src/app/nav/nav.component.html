@@ -29,10 +29,9 @@
       </li>
     </ul>
     @if (accountService.currentUser()) {
-    <div>{{ accountService.currentUser()?.Username }}</div>
     <div dropdown class="dropdown">
       <a dropdownToggle class="dropdown-toggle text-light text-decoration-none"
-        >Welcome {{ accountService.currentUser()?.Username | titlecase }}</a
+        >Welcome {{ accountService.currentUser()?.username | titlecase }}</a
       >
       <div *bsDropdownMenu class="dropdown-menu">
         <a class="dropdown-item">Edit Profile</a>
